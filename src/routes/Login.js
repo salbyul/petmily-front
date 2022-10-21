@@ -8,7 +8,6 @@ function Login() {
         const prefix = '/assets/login/login0';
         const suffix = '.jpg';
         let randomNumber = Math.floor(Math.random() * (max - min)) + min;
-        console.log(randomNumber);
         setImage(prefix + randomNumber + suffix);
     }, []);
     return (
