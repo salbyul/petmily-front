@@ -5,11 +5,15 @@ import Main from './routes/Main';
 import SignUp from './routes/SignUp';
 
 function App() {
+    const token = localStorage.getItem('token');
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/main" element={<Main />} />
+                {!token ? (
+                    <Route path="/" element={<Login />} />
+                ) : (
+                    <Route path="/" element={<Main />} />
+                )}
                 <Route path="/signup" element={<SignUp />} />
                 {/* <Route path="/" element={<Navbar />} /> */}
             </Routes>

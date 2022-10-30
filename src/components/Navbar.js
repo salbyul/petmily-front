@@ -5,7 +5,7 @@ function Navbar() {
                 <div className="flex items-center flex-shrink-0 text-black mr-6">
                     <a href="#!" className="flex items-center justify-center">
                         <img
-                            src="/assets/login/pawprint.png"
+                            src="/assets/pawprint.png"
                             alt="Petmily Logo"
                             className="fill-current h-8 w-8 mr-2"
                         />

@@ -33,7 +33,7 @@ function SignUp() {
 
     useEffect(() => {
         if (password !== '') {
-            verifyPassword(password);
+            verifyPassword(password, verify);
         }
         if (password === '' && verify === '') {
             setResultVerifyPassword(true);
@@ -176,164 +176,162 @@ function SignUp() {
                                 {/* <p>Enter your information to register</p> */}
                             </div>
                             <div>
-                                <form>
-                                    <div className="flex -mx-3">
-                                        <div className="w-full px-3 mb-5">
-                                            <label
-                                                htmlFor="email"
-                                                className="text-xs font-semibold px-1"
-                                            >
-                                                Email
-                                            </label>
-                                            <div className="flex">
-                                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                                    <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
-                                                </div>
-                                                <input
-                                                    id="email"
-                                                    type="email"
-                                                    className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
-                                                    placeholder="johnsmith@example.com"
-                                                    value={email}
-                                                    onChange={onEmailChange}
-                                                />
+                                <div className="flex -mx-3">
+                                    <div className="w-full px-3 mb-5">
+                                        <label
+                                            htmlFor="email"
+                                            className="text-xs font-semibold px-1"
+                                        >
+                                            Email
+                                        </label>
+                                        <div className="flex">
+                                            <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                                                <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
                                             </div>
-                                            {!resultVerifyEmail && (
-                                                <h2 className="text-lg text-red-400">
-                                                    이메일 양식을 지켜주세요.
-                                                </h2>
-                                            )}
-                                            {blankEmail && (
-                                                <h2 className="text-lg text-red-400">
-                                                    이메일에는 공백을 입력할 수
-                                                    없습니다.
-                                                </h2>
-                                            )}
+                                            <input
+                                                id="email"
+                                                type="email"
+                                                className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                                                placeholder="johnsmith@example.com"
+                                                value={email}
+                                                onChange={onEmailChange}
+                                            />
                                         </div>
+                                        {!resultVerifyEmail && (
+                                            <h2 className="text-lg text-red-400">
+                                                이메일 양식을 지켜주세요.
+                                            </h2>
+                                        )}
+                                        {blankEmail && (
+                                            <h2 className="text-lg text-red-400">
+                                                이메일에는 공백을 입력할 수
+                                                없습니다.
+                                            </h2>
+                                        )}
                                     </div>
-                                    <div className="flex -mx-3">
-                                        <div className="w-full px-3 mb-5">
-                                            <label
-                                                htmlFor="email"
-                                                className="text-xs font-semibold px-1"
-                                            >
-                                                Nickname
-                                            </label>
-                                            <div className="flex">
-                                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                                    <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
-                                                </div>
-                                                <input
-                                                    id="nickname"
-                                                    type="text"
-                                                    className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
-                                                    placeholder="john__07"
-                                                    value={nickname}
-                                                    onChange={onNicknameChange}
-                                                />
+                                </div>
+                                <div className="flex -mx-3">
+                                    <div className="w-full px-3 mb-5">
+                                        <label
+                                            htmlFor="email"
+                                            className="text-xs font-semibold px-1"
+                                        >
+                                            Nickname
+                                        </label>
+                                        <div className="flex">
+                                            <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                                                <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
                                             </div>
-                                            {!resultNicknameLength && (
-                                                <h2 className="text-lg text-red-400">
-                                                    닉네임 길이는 5 ~ 15 가
-                                                    유효합니다.
-                                                </h2>
-                                            )}
-                                            {blankNickname && (
-                                                <h2 className="text-lg text-red-400">
-                                                    닉네임에는 공백을 입력할 수
-                                                    없습니다.
-                                                </h2>
-                                            )}
+                                            <input
+                                                id="nickname"
+                                                type="text"
+                                                className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                                                placeholder="john__07"
+                                                value={nickname}
+                                                onChange={onNicknameChange}
+                                            />
                                         </div>
+                                        {!resultNicknameLength && (
+                                            <h2 className="text-lg text-red-400">
+                                                닉네임 길이는 5 ~ 15 가
+                                                유효합니다.
+                                            </h2>
+                                        )}
+                                        {blankNickname && (
+                                            <h2 className="text-lg text-red-400">
+                                                닉네임에는 공백을 입력할 수
+                                                없습니다.
+                                            </h2>
+                                        )}
                                     </div>
-                                    <div className="flex -mx-3">
-                                        <div className="w-full px-3 mb-5">
-                                            <label
-                                                htmlFor="password"
-                                                className="text-xs font-semibold px-1"
-                                            >
-                                                Password
-                                            </label>
-                                            <div className="flex">
-                                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                                    <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
-                                                </div>
-                                                <input
-                                                    id="password"
-                                                    type="password"
-                                                    className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
-                                                    placeholder="***********"
-                                                    value={password}
-                                                    onChange={onPasswordChange}
-                                                />
+                                </div>
+                                <div className="flex -mx-3">
+                                    <div className="w-full px-3 mb-5">
+                                        <label
+                                            htmlFor="password"
+                                            className="text-xs font-semibold px-1"
+                                        >
+                                            Password
+                                        </label>
+                                        <div className="flex">
+                                            <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                                                <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
                                             </div>
-                                            {!resultPasswordLength && (
-                                                <h2 className="text-lg text-red-400">
-                                                    비밀번호의 길이는 8 ~ 20이
-                                                    유효합니다.
-                                                </h2>
-                                            )}
-                                            {blankPassword && (
-                                                <h2 className="text-lg text-red-400">
-                                                    비밀번호에는 공백을 입력할
-                                                    수 없습니다.
-                                                </h2>
-                                            )}
-                                            {!resultVerifyPassword && (
-                                                <h2 className="text-lg text-red-400">
-                                                    비밀번호가 같지 않습니다.
-                                                </h2>
-                                            )}
+                                            <input
+                                                id="password"
+                                                type="password"
+                                                className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                                                placeholder="***********"
+                                                value={password}
+                                                onChange={onPasswordChange}
+                                            />
                                         </div>
+                                        {!resultPasswordLength && (
+                                            <h2 className="text-lg text-red-400">
+                                                비밀번호의 길이는 8 ~ 20이
+                                                유효합니다.
+                                            </h2>
+                                        )}
+                                        {blankPassword && (
+                                            <h2 className="text-lg text-red-400">
+                                                비밀번호에는 공백을 입력할 수
+                                                없습니다.
+                                            </h2>
+                                        )}
+                                        {!resultVerifyPassword && (
+                                            <h2 className="text-lg text-red-400">
+                                                비밀번호가 같지 않습니다.
+                                            </h2>
+                                        )}
                                     </div>
-                                    <div className="flex -mx-3">
-                                        <div className="w-full px-3 mb-5">
-                                            <label
-                                                htmlFor="verify"
-                                                className="text-xs font-semibold px-1"
-                                            >
-                                                Password Verify
-                                            </label>
-                                            <div className="flex">
-                                                <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
-                                                    <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
-                                                </div>
-                                                <input
-                                                    id="verify"
-                                                    type="password"
-                                                    className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
-                                                    placeholder="***********"
-                                                    value={verify}
-                                                    onChange={onVerifyChange}
-                                                />
+                                </div>
+                                <div className="flex -mx-3">
+                                    <div className="w-full px-3 mb-5">
+                                        <label
+                                            htmlFor="verify"
+                                            className="text-xs font-semibold px-1"
+                                        >
+                                            Password Verify
+                                        </label>
+                                        <div className="flex">
+                                            <div className="w-10 z-10 pl-1 text-center pointer-events-none flex items-center justify-center">
+                                                <i className="mdi mdi-email-outline text-gray-400 text-lg"></i>
                                             </div>
-                                            {!resultVerifyPassword && (
-                                                <h2 className="text-lg text-red-400">
-                                                    비밀번호가 같지 않습니다.
-                                                </h2>
-                                            )}
+                                            <input
+                                                id="verify"
+                                                type="password"
+                                                className="w-full -ml-10 pl-10 pr-3 py-2 rounded-lg border-2 border-gray-200 outline-none focus:border-indigo-500"
+                                                placeholder="***********"
+                                                value={verify}
+                                                onChange={onVerifyChange}
+                                            />
                                         </div>
+                                        {!resultVerifyPassword && (
+                                            <h2 className="text-lg text-red-400">
+                                                비밀번호가 같지 않습니다.
+                                            </h2>
+                                        )}
                                     </div>
-                                    <div className="flex -mx-3">
-                                        <div className="w-full px-3 mb-5">
+                                </div>
+                                <div className="flex -mx-3">
+                                    <div className="w-full px-3 mb-5">
+                                        <button
+                                            type="button"
+                                            onClick={onClick}
+                                            className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
+                                        >
+                                            회원가입
+                                        </button>
+                                        <a href="/">
                                             <button
                                                 type="button"
-                                                onClick={onClick}
-                                                className="block w-full max-w-xs mx-auto bg-indigo-500 hover:bg-indigo-700 focus:bg-indigo-700 text-white rounded-lg px-3 py-3 font-semibold"
+                                                className="block w-full max-w-xs mt-2 mx-auto bg-red-500 hover:bg-red-700 focus:bg-red-700 text-white rounded-lg px-3 py-3 font-semibold"
                                             >
-                                                회원가입
+                                                취소
                                             </button>
-                                            <a href="/">
-                                                <button
-                                                    type="button"
-                                                    className="block w-full max-w-xs mt-2 mx-auto bg-red-500 hover:bg-red-700 focus:bg-red-700 text-white rounded-lg px-3 py-3 font-semibold"
-                                                >
-                                                    취소
-                                                </button>
-                                            </a>
-                                        </div>
+                                        </a>
                                     </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>

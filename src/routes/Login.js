@@ -1,15 +1,59 @@
+import axios from 'axios';
 import { useEffect, useState } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+// import { changeToken, selectToken } from '../slice/TokenSlice';
 
 function Login() {
     const [image, setImage] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [verifyLogin, setVerifyLogin] = useState(true);
+    // const [myToken, setMyToken] = useState('');
+    // const dispatch = useDispatch;
+    // const token = useSelector(selectToken);
+
+    // useEffect(() => {
+    //     console.log('myToken: ' + myToken);
+    //     // dispatch(changeToken(myToken));
+    // }, [myToken]);
+    // dispatch(changeToken(myToken));
+    // console.log();
+
+    const loginImageMax = 4;
+    const loginImageMin = 1;
+
+    const onEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+    const onPasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
     useEffect(() => {
-        const max = 4;
-        const min = 1;
         const prefix = '/assets/login/login0';
         const suffix = '.jpg';
-        let randomNumber = Math.floor(Math.random() * (max - min)) + min;
+        let randomNumber =
+            Math.floor(Math.random() * (loginImageMax - loginImageMin)) +
+            loginImageMin;
         setImage(prefix + randomNumber + suffix);
     }, []);
+
+    const loginClick = () => {
+        const member = {
+            email: email,
+            password: password,
+        };
+        axios
+            .post('http://localhost:8080/login', member)
+            .then((response) => {
+                localStorage.setItem('token', response.data);
+                console.log(localStorage.getItem('Token'));
+                window.location.reload();
+            })
+            .catch((error) => {
+                console.log(error);
+                setVerifyLogin(false);
+            });
+    };
     return (
         <>
             <div className="flex min-h-screen items-center justify-center">
@@ -24,7 +68,7 @@ function Login() {
                                                 <div className="text-center">
                                                     <img
                                                         className="mx-auto w-40"
-                                                        src="/assets/login/pawprint.png"
+                                                        src="/assets/pawprint.png"
                                                         alt="logo"
                                                     />
                                                     <h4 className="text-3xl font-semibold mt-1 mb-12 pb-1 text-green-600">
@@ -32,15 +76,22 @@ function Login() {
                                                     </h4>
                                                 </div>
                                                 <form>
-                                                    <p className="mb-4">
-                                                        Please login to your
-                                                        account
-                                                    </p>
+                                                    {!verifyLogin && (
+                                                        <h2 className="text-lg text-red-400 mb-1">
+                                                            이메일 혹은
+                                                            비밀번호를
+                                                            확인해주세요.
+                                                        </h2>
+                                                    )}
                                                     <div className="mb-4">
                                                         <input
                                                             type="text"
                                                             className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
-                                                            placeholder="Username"
+                                                            placeholder="Email"
+                                                            value={email}
+                                                            onChange={
+                                                                onEmailChange
+                                                            }
                                                         />
                                                     </div>
                                                     <div className="mb-4">
@@ -48,10 +99,15 @@ function Login() {
                                                             type="password"
                                                             className="form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                                                             placeholder="Password"
+                                                            value={password}
+                                                            onChange={
+                                                                onPasswordChange
+                                                            }
                                                         />
                                                     </div>
                                                     <div className="text-center pt-1 mb-12 pb-1">
                                                         <button
+                                                            onClick={loginClick}
                                                             className="inline-block px-6 py-2.5 text-black font-medium text-xs leading-tight uppercase rounded shadow-md hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg transition duration-150 ease-in-out w-full mb-3"
                                                             type="button"
                                                             // data-mdb-ripple="true"
@@ -61,19 +117,19 @@ function Login() {
                                                             //         'linear-gradient(to right, #ee7724, #d8363a, #dd3675, #b44593)',
                                                             // }}
                                                         >
-                                                            Login
+                                                            로그인
                                                         </button>
                                                         <a
                                                             className="text-gray-500"
                                                             href="#1"
                                                         >
-                                                            Forgot password?
+                                                            비밀번호를
+                                                            잊으셨나요?
                                                         </a>
                                                     </div>
                                                     <div className="flex items-center justify-between pb-6">
                                                         <p className="mb-0 mr-2">
-                                                            Don't have an
-                                                            account?
+                                                            계정이 없으신가요?
                                                         </p>
                                                         <a href="/signup">
                                                             <button
@@ -82,7 +138,7 @@ function Login() {
                                                                 data-mdb-ripple="true"
                                                                 data-mdb-ripple-color="light"
                                                             >
-                                                                Sign up
+                                                                회원가입
                                                             </button>
                                                         </a>
                                                     </div>
