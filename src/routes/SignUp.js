@@ -35,7 +35,10 @@ function SignUp() {
         if (password !== '') {
             verifyPassword(password);
         }
-    }, [password]);
+        if (password === '' && verify === '') {
+            setResultVerifyPassword(true);
+        }
+    }, [password, verify]);
 
     const onEmailChange = (e) => {
         setEmail(e.target.value);
