@@ -5,7 +5,6 @@ import SidebarTabList from './SidebarTabList';
 function Sidebar() {
     const [nickname, setNickname] = useState('');
     const token = localStorage.getItem('token');
-    console.log(token);
     axios
         .get('http://localhost:8080/member', {
             headers: { Authorization: token },
@@ -14,7 +13,8 @@ function Sidebar() {
             setNickname(response.data);
         })
         .catch((error) => {
-            console.log(error);
+            localStorage.clear();
+            window.location.reload();
         });
     return (
         <>

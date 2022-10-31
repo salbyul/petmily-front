@@ -46,15 +46,11 @@ function Login() {
             .post('http://localhost:8080/login', member)
             .then((response) => {
                 localStorage.setItem('token', `Bearer ${response.data}`);
-                console.log("it's ok!");
                 axios.defaults.headers.common['Authorization'] =
                     localStorage.getItem('token');
-                // axios.defaults.headers.common['Access-Control-Allow-Origin'] =
-                //     '*';
                 window.location.reload();
             })
             .catch((error) => {
-                console.log(error);
                 setVerifyLogin(false);
             });
     };
