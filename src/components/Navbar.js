@@ -10,7 +10,7 @@ function Navbar() {
                             className="fill-current h-8 w-8 mr-2"
                         />
                         <span className="font-semibold text-xl tracking-tight">
-                            Tailwind CSS
+                            Petmily
                         </span>
                     </a>
                 </div>

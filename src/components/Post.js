@@ -42,7 +42,7 @@ function Feed() {
                     </div>
                     <div>
                         <img
-                            src="/assets/login/pawprint.png"
+                            src="/assets/pawprint.png"
                             className="w-full h-75"
                             alt="content"
                         />

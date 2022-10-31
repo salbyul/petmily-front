@@ -6,6 +6,7 @@ import SignUp from './routes/SignUp';
 
 function App() {
     const token = localStorage.getItem('token');
+
     return (
         <Router>
             <Routes>

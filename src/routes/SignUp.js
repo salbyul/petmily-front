@@ -65,7 +65,7 @@ function SignUp() {
             .then((response) => {
                 // TODO
                 if (response.status === 200) {
-                    window.location.href = 'http://localhost:3000/main';
+                    window.location.href = 'http://localhost:3000/';
                 }
             })
             //TODO

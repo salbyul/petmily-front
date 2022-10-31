@@ -1,6 +1,21 @@
+import axios from 'axios';
+import { useState } from 'react';
 import SidebarTabList from './SidebarTabList';
 
 function Sidebar() {
+    const [nickname, setNickname] = useState('');
+    const token = localStorage.getItem('token');
+    console.log(token);
+    axios
+        .get('http://localhost:8080/member', {
+            headers: { Authorization: token },
+        })
+        .then((response) => {
+            setNickname(response.data);
+        })
+        .catch((error) => {
+            console.log(error);
+        });
     return (
         <>
             <div className="w-2/12 bg-white rounded p-3 shadow-lg h-screen">
@@ -12,7 +27,7 @@ function Sidebar() {
                     />
                     <div>
                         <h4 className="font-semibold text-lg text-gray-700 capitalize font-poppins tracking-wide">
-                            James Bhatta
+                            {nickname}
                         </h4>
                         <span className="text-sm tracking-wide flex items-center space-x-1">
                             <svg

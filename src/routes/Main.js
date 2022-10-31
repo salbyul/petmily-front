@@ -1,3 +1,4 @@
+import axios from 'axios';
 import Navbar from '../components/Navbar';
 import PostList from '../components/PostList';
 import Sidebar from '../components/Sidebar';
