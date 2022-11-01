@@ -1,12 +1,18 @@
 import { useState } from 'react';
 import FriendModal from './FriendModal';
+import ReactModal from 'react-modal';
 import FriendTab from './FriendTab';
 
 function Friend() {
+    ReactModal.setAppElement('#root');
     const [input, setInput] = useState('');
+    const [isOpen, setIsOpen] = useState(false);
     const onChange = (e) => {
         setInput(e.target.value);
         console.log(input);
+    };
+    const onClick = () => {
+        setIsOpen(true);
     };
     return (
         <>
@@ -50,6 +56,7 @@ function Friend() {
                                 <button
                                     type="button"
                                     className="p-2.5 ml-2 text-sm font-medium text-white bg-blue-400 rounded-lg border border-blue-500 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300"
+                                    onClick={onClick}
                                 >
                                     <svg
                                         className="w-5 h-5"
@@ -67,6 +74,13 @@ function Friend() {
                                     </svg>
                                     <span className="sr-only">Search</span>
                                 </button>
+                                <ReactModal
+                                    isOpen={isOpen}
+                                    onRequestClose={() => setIsOpen(false)}
+                                    className="p-4 w-full max-w-md h-full md:h-auto absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
+                                >
+                                    <FriendModal />
+                                </ReactModal>
                             </form>
                         </div>
                         <FriendTab />

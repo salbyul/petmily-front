@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Friend from '../components/Friend';
 import Navbar from '../components/Navbar';
+import Notification from '../components/Notification';
 import PostList from '../components/PostList';
 import Sidebar from '../components/Sidebar';
 import { getPage } from '../slice/PageSlice';
@@ -18,6 +19,7 @@ function Main() {
     const state = {
         main: <PostList />,
         friend: <Friend />,
+        notification: <Notification />,
     };
 
     return (
