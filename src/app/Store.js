@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { tokenSlice } from '../slice/TokenSlice';
+import pageReducer from '../slice/PageSlice';
 
 const Store = configureStore({
     reducer: {
-        token: tokenSlice,
+        pages: pageReducer,
     },
 });
 

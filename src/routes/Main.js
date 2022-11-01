@@ -1,9 +1,25 @@
 import axios from 'axios';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import Friend from '../components/Friend';
 import Navbar from '../components/Navbar';
 import PostList from '../components/PostList';
 import Sidebar from '../components/Sidebar';
+import { getPage } from '../slice/PageSlice';
 
 function Main() {
+    const [page, setPage] = useState('');
+    const pageValue = useSelector(getPage);
+    console.log(page);
+    useEffect(() => {
+        setPage(pageValue);
+    }, [pageValue]);
+
+    const state = {
+        main: <PostList />,
+        friend: <Friend />,
+    };
+
     return (
         <>
             <div>
@@ -11,7 +27,7 @@ function Main() {
             </div>
             <div className="flex h-screen items-center justify-center">
                 <Sidebar />
-                <PostList />
+                {state[page]}
             </div>
         </>
     );

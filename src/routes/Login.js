@@ -1,23 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { changeToken, selectToken } from '../slice/TokenSlice';
 
 function Login() {
     const [image, setImage] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [verifyLogin, setVerifyLogin] = useState(true);
-    // const [myToken, setMyToken] = useState('');
-    // const dispatch = useDispatch;
-    // const token = useSelector(selectToken);
-
-    // useEffect(() => {
-    //     console.log('myToken: ' + myToken);
-    //     // dispatch(changeToken(myToken));
-    // }, [myToken]);
-    // dispatch(changeToken(myToken));
-    // console.log();
 
     const loginImageMax = 4;
     const loginImageMin = 1;

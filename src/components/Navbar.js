@@ -1,9 +1,15 @@
+import { useState } from 'react';
+
 function Navbar() {
+    const [input, setInput] = useState('');
+    const onChange = (e) => {
+        setInput(e.target.value);
+    };
     return (
         <>
             <nav className="flex items-center justify-between flex-wrap shadow-md bg-gray-50 p-6">
                 <div className="flex items-center flex-shrink-0 text-black mr-6">
-                    <a href="#!" className="flex items-center justify-center">
+                    <a href="/" className="flex items-center justify-center">
                         <img
                             src="/assets/pawprint.png"
                             alt="Petmily Logo"
@@ -74,6 +80,8 @@ function Navbar() {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
                                     placeholder="Search"
                                     required
+                                    value={input}
+                                    onChange={onChange}
                                 />
                             </div>
                             <button
@@ -97,12 +105,6 @@ function Navbar() {
                                 <span className="sr-only">Search</span>
                             </button>
                         </form>
-                        {/* <a
-                            href="#!"
-                            className="inline-block text-sm px-4 py-2 leading-none border rounded text-black border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-                        >
-                            Download
-                        </a> */}
                     </div>
                 </div>
             </nav>

@@ -1,10 +1,14 @@
-function SidebarList({ d, subject }) {
+import { useDispatch, useSelector } from 'react-redux';
+import { changePage, getPage } from '../slice/PageSlice';
+
+function SidebarTabList({ d, subject }) {
+    const dispatch = useDispatch();
     return (
         <>
             <li>
-                <a
-                    href="#!"
+                <button
                     className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
+                    onClick={() => dispatch(changePage(subject))}
                 >
                     <span className="text-gray-600">
                         <svg
@@ -23,9 +27,9 @@ function SidebarList({ d, subject }) {
                         </svg>
                     </span>
                     <span>{subject}</span>
-                </a>
+                </button>
             </li>
         </>
     );
 }
-export default SidebarList;
+export default SidebarTabList;
