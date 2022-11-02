@@ -1,20 +1,39 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import FriendModal from './FriendModal';
 import ReactModal from 'react-modal';
-import FriendTab from './FriendTab';
 import FriendList from './FriendList';
+import axios from 'axios';
 
 function Friend() {
+    const token = localStorage.getItem('token');
+    const [friendList, setFriendList] = useState([]);
     ReactModal.setAppElement('#root');
     const [input, setInput] = useState('');
     const [isOpen, setIsOpen] = useState(false);
     const onChange = (e) => {
         setInput(e.target.value);
-        console.log(input);
     };
     const onClick = () => {
         setIsOpen(true);
     };
+
+    useEffect(() => {
+        let list = null;
+        axios
+            .get('http://localhost:8080/member/find-all', {
+                headers: { Authorization: token },
+                params: { target: input },
+            })
+            .then((response) => {
+                list = response.data;
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            .then(() => {
+                setFriendList(list);
+            });
+    }, [isOpen]);
     return (
         <>
             <div className="max-w-md mx-auto bg-white shadow-lg rounded-md overflow-hidden md:max-w-2xl">
@@ -75,12 +94,13 @@ function Friend() {
                                     </svg>
                                     <span className="sr-only">Search</span>
                                 </button>
+
                                 <ReactModal
                                     isOpen={isOpen}
                                     onRequestClose={() => setIsOpen(false)}
                                     className="p-4 w-full max-w-md h-full md:h-auto absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2"
                                 >
-                                    <FriendModal />
+                                    <FriendModal list={friendList} />
                                 </ReactModal>
                             </form>
                         </div>

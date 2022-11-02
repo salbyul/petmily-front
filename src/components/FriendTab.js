@@ -1,4 +1,4 @@
-function FriendTab() {
+function FriendTab([nickname]) {
     return (
         <>
             <div className="flex flex-row items-center p-2">

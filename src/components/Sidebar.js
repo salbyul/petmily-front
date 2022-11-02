@@ -23,7 +23,7 @@ function Sidebar() {
                     <img
                         className="h-12 rounded-full"
                         src="http://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp"
-                        alt="james Bhatta"
+                        alt={nickname}
                     />
                     <div>
                         <h4 className="font-semibold text-lg text-gray-700 capitalize font-poppins tracking-wide">

@@ -1,17 +1,16 @@
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import Friend from '../components/Friend';
 import Navbar from '../components/Navbar';
 import Notification from '../components/Notification';
 import PostList from '../components/PostList';
+import MyProfile from '../components/MyProfile';
 import Sidebar from '../components/Sidebar';
 import { getPage } from '../slice/PageSlice';
 
 function Main() {
     const [page, setPage] = useState('');
     const pageValue = useSelector(getPage);
-    console.log(page);
     useEffect(() => {
         setPage(pageValue);
     }, [pageValue]);
@@ -20,6 +19,7 @@ function Main() {
         main: <PostList />,
         friend: <Friend />,
         notification: <Notification />,
+        myProfile: <MyProfile />,
     };
 
     return (

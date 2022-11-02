@@ -1,11 +1,8 @@
+import axios from 'axios';
 import FriendTab from './FriendTab';
 
 function FriendList() {
-    return (
-        <>
-            <FriendTab />
-            <FriendTab />
-        </>
-    );
+    const token = localStorage.getItem('token');
+    return <></>;
 }
 export default FriendList;
