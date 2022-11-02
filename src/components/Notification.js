@@ -1,3 +1,5 @@
+import NotificationList from './NotificationList';
+
 function Notification() {
     return (
         <>
@@ -5,7 +7,7 @@ function Notification() {
                 <div className="md:flex">
                     <div className="w-full">
                         <div className="flex flex-row items-center p-2">
-                            This is Notification Component!
+                            <NotificationList />
                         </div>
                     </div>
                 </div>

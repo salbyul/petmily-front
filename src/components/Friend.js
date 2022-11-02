@@ -2,6 +2,7 @@ import { useState } from 'react';
 import FriendModal from './FriendModal';
 import ReactModal from 'react-modal';
 import FriendTab from './FriendTab';
+import FriendList from './FriendList';
 
 function Friend() {
     ReactModal.setAppElement('#root');
@@ -83,8 +84,7 @@ function Friend() {
                                 </ReactModal>
                             </form>
                         </div>
-                        <FriendTab />
-                        <FriendTab />
+                        <FriendList />
                     </div>
                 </div>
             </div>
