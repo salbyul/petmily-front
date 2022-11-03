@@ -3,13 +3,17 @@ import { useEffect, useState } from 'react';
 
 function MyProfile() {
     const token = localStorage.getItem('token');
-    const [nickname, setNickname] = useState('');
-    const [email, setEmail] = useState('');
-    const [statusMessage, setStatusMessage] = useState('');
-    const [edit, setEdit] = useState(true);
-    const [editedNickname, setEditedNickname] = useState('');
-    const [editedStatusMessage, setEditedStatusMessage] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [nickname, setNickname] = useState(''); // input
+    const [email, setEmail] = useState(''); // input
+    const [statusMessage, setStatusMessage] = useState(''); // input
+    const [edit, setEdit] = useState(true); // 수정중인지
+    // TODO
+    const [completeEdit, setCompleteEdit] = useState(false); // 수정 완료 확인
+    const [editedNickname, setEditedNickname] = useState(''); // 수정중인 nickname input
+    const [editedStatusMessage, setEditedStatusMessage] = useState(''); // 수정중인 statusMessage input
+    const [duplicate, setDuplicate] = useState(false); // 닉네임 중복 체크
+    const [invalid, setInvalid] = useState(false); // 닉네임 제약 조건 체크
+    const [loading, setLoading] = useState(false); // 통신 완료 확인
 
     useEffect(() => {
         axios
@@ -17,26 +21,56 @@ function MyProfile() {
                 headers: { Authorization: token },
             })
             .then((response) => {
-                console.log(response);
                 setNickname(response.data.nickname);
                 setEditedNickname(response.data.nickname);
                 setEmail(response.data.email);
+                if (statusMessage === editedStatusMessage) {
+                    setEditedStatusMessage(response.data.statusMessage);
+                }
                 setStatusMessage(response.data.statusMessage);
-                setEditedStatusMessage(response.data.statusMessage);
                 setLoading(true);
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    }, [completeEdit]);
 
     const doEdit = () => {
         setEdit(!edit);
     };
     const cancel = () => {
         setEdit(!edit);
+        setDuplicate(false);
+        setInvalid(false);
+        setEditedStatusMessage(statusMessage);
+        setEditedNickname(nickname);
     };
-    const submit = () => {};
+    const submit = () => {
+        axios
+            .put(
+                'http://localhost:8080/member/my-detail/modify',
+                {
+                    nickname: editedNickname,
+                    statusMessage: editedStatusMessage,
+                },
+                { headers: { Authorization: token } }
+            )
+            .then((response) => {
+                // setCompleteEdit(true);
+                // setEdit(!edit);
+                // setDuplicate(false);
+                // setInvalid(false);
+                window.location.reload();
+            })
+            .catch((error) => {
+                const errorResult = error.response.data;
+                if (errorResult.code === 'duplicate') {
+                    setDuplicate(true);
+                } else if (errorResult.code === 'invalid') {
+                    setInvalid(true);
+                }
+            });
+    };
 
     const onNicknameChange = (e) => {
         setEditedNickname(e.target.value);
@@ -50,6 +84,13 @@ function MyProfile() {
         <>
             {loading && (
                 <div className="mx-auto bg-white shadow-lg rounded-md overflow-hidden">
+                    <div className="text-center">
+                        {completeEdit && (
+                            <h1 className="text-4xl text-green-400">
+                                수정되었습니다.
+                            </h1>
+                        )}
+                    </div>
                     <div className="h-full">
                         <div className="border-b-2 block md:flex">
                             <div className="w-full md:w-2/5 p-4 sm:p-6 lg:p-8 bg-white shadow-md">
@@ -60,7 +101,7 @@ function MyProfile() {
                                     {edit && (
                                         <button
                                             type="button"
-                                            className="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800"
+                                            className="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-3 py-1 hover:bg-gray-800"
                                             onClick={doEdit}
                                         >
                                             수정
@@ -69,7 +110,7 @@ function MyProfile() {
                                     {!edit && (
                                         <button
                                             type="button"
-                                            className="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-5 py-2 hover:bg-gray-800"
+                                            className="-mt-2 text-md font-bold text-white bg-gray-700 rounded-full px-1 py-1 hover:bg-gray-800"
                                             onClick={submit}
                                         >
                                             완료
@@ -78,7 +119,7 @@ function MyProfile() {
                                     {!edit && (
                                         <button
                                             type="button"
-                                            className="-mt-2 text-md font-bold text-white bg-red-700 rounded-full px-5 py-2 hover:bg-red-800"
+                                            className="-mt-2 text-md font-bold text-white bg-red-700 rounded-full px-1 py-1 hover:bg-red-800"
                                             onClick={cancel}
                                         >
                                             취소
@@ -87,13 +128,9 @@ function MyProfile() {
                                 </div>
                                 <div className="pb-4">
                                     {edit ? (
-                                        <input
-                                            disabled
-                                            id="statusMessage"
-                                            className="border-1 rounded-r px-4 py-2 w-full"
-                                            type="text"
-                                            value={statusMessage}
-                                        />
+                                        <span className="border-1 rounded-r px-4 py-2 w-full">
+                                            {statusMessage}
+                                        </span>
                                     ) : (
                                         <input
                                             id="editedStatusMessage"
@@ -141,7 +178,18 @@ function MyProfile() {
                                                 />
                                             )}
                                         </div>
+                                        {duplicate && (
+                                            <p className="text-red-500 text-sm">
+                                                닉네임이 중복됩니다.
+                                            </p>
+                                        )}
+                                        {invalid && (
+                                            <p className="text-red-500 text-sm">
+                                                닉네임은 5 ~ 15자 이내입니다.
+                                            </p>
+                                        )}
                                     </div>
+
                                     <div className="pb-4">
                                         <label
                                             htmlFor="about"

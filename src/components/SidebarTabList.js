@@ -1,14 +1,36 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { changePage, getPage } from '../slice/PageSlice';
+import { useEffect, useState } from 'react';
 
 function SidebarTabList({ d, subject }) {
-    const dispatch = useDispatch();
+    const [page, setPage] = useState('');
+    useEffect(() => {
+        switch (subject) {
+            case '내 포스트':
+                setPage('/');
+                break;
+            case '알림':
+                setPage('/notification');
+                break;
+            case '메시지':
+                setPage('/messages');
+                break;
+            case '내 프로필':
+                setPage('/profile');
+                break;
+            case '친구':
+                setPage('/follow');
+                break;
+            case '로그아웃':
+                setPage('/logout');
+                break;
+            default:
+        }
+    }, []);
     return (
         <>
             <li>
-                <button
+                <a
+                    href={page}
                     className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
-                    onClick={() => dispatch(changePage(subject))}
                 >
                     <span className="text-gray-600">
                         <svg
@@ -27,7 +49,7 @@ function SidebarTabList({ d, subject }) {
                         </svg>
                     </span>
                     <span>{subject}</span>
-                </button>
+                </a>
             </li>
         </>
     );

@@ -1,21 +1,25 @@
 import axios from 'axios';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SidebarTabList from './SidebarTabList';
 
 function Sidebar() {
     const [nickname, setNickname] = useState('');
+    const [statusMessage, setStatusMessage] = useState('');
     const token = localStorage.getItem('token');
-    axios
-        .get('http://localhost:8080/member', {
-            headers: { Authorization: token },
-        })
-        .then((response) => {
-            setNickname(response.data);
-        })
-        .catch((error) => {
-            localStorage.clear();
-            window.location.reload();
-        });
+    useEffect(() => {
+        axios
+            .get('http://localhost:8080/member', {
+                headers: { Authorization: token },
+            })
+            .then((response) => {
+                setNickname(response.data.nickname);
+                setStatusMessage(response.data.statusMessage);
+            })
+            .catch((error) => {
+                localStorage.clear();
+                window.location.reload();
+            });
+    }, []);
     return (
         <>
             <div className="w-2/12 bg-white rounded p-3 shadow-lg h-screen">
@@ -26,7 +30,7 @@ function Sidebar() {
                         alt={nickname}
                     />
                     <div>
-                        <h4 className="font-semibold text-lg text-gray-700 capitalize font-poppins tracking-wide">
+                        <h4 className="font-semibold text-lg text-gray-700 font-poppins tracking-wide">
                             {nickname}
                         </h4>
                         <span className="text-sm tracking-wide flex items-center space-x-1">
@@ -43,7 +47,9 @@ function Sidebar() {
                                     d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
                                 />
                             </svg>
-                            <span className="text-gray-600">Verified</span>
+                            <span className="text-gray-600 text-sm">
+                                {statusMessage}
+                            </span>
                         </span>
                     </div>
                 </div>
@@ -84,30 +90,6 @@ function Sidebar() {
                         d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
                         subject="로그아웃"
                     />
-                    {/* <li>
-                            <a
-                                href="#!"
-                                className="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-200 focus:bg-gray-200 focus:shadow-outline"
-                            >
-                                <span className="text-gray-600">
-                                    <svg
-                                        className="h-5"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke="currentColor"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            strokeWidth="2"
-                                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
-                                        />
-                                    </svg>
-                                </span>
-                                <span>Logout</span>
-                            </a>
-                        </li> */}
                 </ul>
             </div>
         </>

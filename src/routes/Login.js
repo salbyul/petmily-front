@@ -34,8 +34,6 @@ function Login() {
             .post('http://localhost:8080/login', member)
             .then((response) => {
                 localStorage.setItem('token', `Bearer ${response.data}`);
-                axios.defaults.headers.common['Authorization'] =
-                    localStorage.getItem('token');
                 window.location.reload();
             })
             .catch((error) => {

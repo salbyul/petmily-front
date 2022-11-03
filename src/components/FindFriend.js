@@ -1,7 +1,8 @@
 function FindFriend({ nickname }) {
+    const link = '/profile?m=' + nickname;
     return (
         <>
-            <a href="/userdetail">
+            <a href={link}>
                 <div className="flex flex-row items-center p-2 m-2 shadow">
                     <img
                         src="https://i.imgur.com/aq39RMA.jpg"

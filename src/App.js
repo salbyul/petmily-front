@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Login from './routes/Login';
-import Main from './routes/Main';
 import SignUp from './routes/SignUp';
+import MainRoute from './routes/MainRoute';
+import FollowRoute from './routes/FollowRoute';
+import ProfileRoute from './routes/ProfileRoute';
 
 function App() {
     const token = localStorage.getItem('token');
@@ -13,10 +15,11 @@ function App() {
                 {!token ? (
                     <Route path="/" element={<Login />} />
                 ) : (
-                    <Route path="/" element={<Main />} />
+                    <Route path="/" element={<MainRoute />} />
                 )}
                 <Route path="/signup" element={<SignUp />} />
-                {/* <Route path="/" element={<Navbar />} /> */}
+                <Route path="/follow" element={<FollowRoute />} />
+                <Route path="/profile" element={<ProfileRoute />} />
             </Routes>
         </Router>
     );
