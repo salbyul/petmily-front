@@ -5,7 +5,7 @@ function SidebarTabList({ d, subject }) {
     useEffect(() => {
         switch (subject) {
             case '내 포스트':
-                setPage('/');
+                setPage('/post');
                 break;
             case '알림':
                 setPage('/notification');
