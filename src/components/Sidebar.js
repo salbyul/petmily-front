@@ -1,3 +1,5 @@
+import { faSquarePlus } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import SidebarTabList from './SidebarTabList';
@@ -6,6 +8,11 @@ function Sidebar() {
     const [nickname, setNickname] = useState('');
     const [statusMessage, setStatusMessage] = useState('');
     const token = localStorage.getItem('token');
+
+    const doPost = () => {
+        window.location.href = '/post/create';
+    };
+
     useEffect(() => {
         axios
             .get('http://localhost:8080/member', {
@@ -52,6 +59,12 @@ function Sidebar() {
                             </span>
                         </span>
                     </div>
+                    <button type="button" onClick={doPost}>
+                        <FontAwesomeIcon
+                            icon={faSquarePlus}
+                            className="hover:text-gray-600 h-8"
+                        />
+                    </button>
                 </div>
                 <ul className="space-y-2 text-sm">
                     <SidebarTabList

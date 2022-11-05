@@ -8,6 +8,7 @@ import ProfileRoute from './routes/ProfileRoute';
 import Logout from './routes/Logout';
 import NotificationRoute from './routes/NotificationRoute';
 import PostRoute from './routes/PostRoute';
+import CreatePostRoute from './routes/CreatePostRoute';
 
 function App() {
     const token = localStorage.getItem('token');
@@ -21,6 +22,7 @@ function App() {
                     <Route path="/" element={<MainRoute />} />
                 )}
                 <Route path="/post" element={<PostRoute />} />
+                <Route path="/post/create" element={<CreatePostRoute />} />
                 {/* TODO */}
                 <Route path="/notification" element={<NotificationRoute />} />
                 <Route path="/signup" element={<SignUp />} />
