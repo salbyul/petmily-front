@@ -1,44 +1,88 @@
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 
 import { useEffect, useState } from 'react';
 
 function CreatePost() {
     const token = localStorage.getItem('token');
     const [imageList, setImageList] = useState([]);
-    const [imageLimit, setImageLimit] = useState(false);
-    const [imageCount, setImageCount] = useState(0);
+    const [imageLogicComplelte, setImageLogicComplelte] = useState(false);
     const [imageSrc, setImageSrc] = useState([]);
     const [text, setText] = useState('');
-    const [hastag, setHashtag] = useState([]);
+    const [hashtagInput, setHashtagInput] = useState('');
+    const [hashtag, setHashtag] = useState([]);
 
     useEffect(() => {
         for (let i = 0; i < imageList.length; i++) {
             encodeFileToBase64(imageList[i]);
         }
+        setImageLogicComplelte(true);
     }, [imageList]);
     useEffect(() => {}, [imageSrc]);
+    useEffect(() => {}, [hashtag]);
+
+    const resize = (e) => {
+        setTimeout(() => {
+            e.target.style.cssText = 'height:auto; padding:0';
+            e.target.style.cssText = 'height:' + e.target.scrollHeight + 'px';
+        }, 0);
+    };
+
+    const onHashtagAddBtn = () => {
+        handleHashtag();
+    };
+
+    const onHashtagRemoveBtn = (e) => {
+        const target = e.target.innerText.substring(
+            1,
+            e.target.innerText.length
+        );
+        const hashtagList = [...hashtag];
+        const index = hashtagList.indexOf(target);
+        hashtagList.splice(index, 1);
+        setHashtag(hashtagList);
+    };
+
+    const onHashtagChange = (e) => {
+        setHashtagInput(e.target.value);
+    };
+
+    const onTextChange = (e) => {
+        setText(e.target.value);
+    };
 
     const onImageChange = (e) => {
+        setImageLogicComplelte(false);
+        if (e.target.files.length + imageSrc.length > 5) {
+            alert('최대 5개의 파일까지만 업로드할 수 있습니다.');
+            return;
+        }
         const chosenFiles = Array.prototype.slice.call(e.target.files);
         handleImageFiles(chosenFiles);
     };
 
-    const handleImageFiles = (files) => {
-        const MAX_COUNT = 5;
-        const uploaded = [...imageList];
-        if (imageLimit === true) {
-            alert('최대 5개의 파일까지만 업로드할 수 있습니다.');
-            return;
-        }
-        files.some((file) => {
-            if (uploaded.length === MAX_COUNT) {
-                setImageLimit(true);
-                alert('최대 5개의 파일까지만 업로드할 수 있습니다.');
-            } else if (uploaded.findIndex((f) => f.name === file.name) === -1) {
-                uploaded.push(file);
+    const handleHashtag = () => {
+        const hashtagList = hashtag;
+        let check = false;
+        hashtagList.forEach((tag) => {
+            if (tag === hashtagInput) {
+                alert('같은 해시태그를 사용할 수 없습니다.');
+                check = true;
+                return;
             }
         });
+        if (check) return;
+        hashtagList.push(hashtagInput);
+        setHashtagInput('');
+        setHashtag(hashtagList);
+    };
+
+    const handleImageFiles = (files) => {
+        const uploaded = [...imageList];
+        if (uploaded.findIndex((f) => f.name === files.name) === -1) {
+            uploaded.push(files[0]);
+        }
         setImageList(uploaded);
     };
 
@@ -53,6 +97,27 @@ function CreatePost() {
                 resolve();
             };
         });
+    };
+
+    const submit = async () => {
+        if (imageList.length === 0) {
+            alert('이미지는 필수 요소입니다.');
+            return;
+        }
+        const formdata = new FormData();
+        imageList.forEach((file) => formdata.append('files', file));
+        hashtag.forEach((tag) => formdata.append('hashtag', tag));
+        formdata.append('content', text);
+        axios
+            .post('http://localhost:8080/post/save', formdata, {
+                headers: { Authorization: token },
+            })
+            .then((response) => {
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
 
     return (
@@ -79,7 +144,6 @@ function CreatePost() {
                                 type="file"
                                 id="uploadBtn"
                                 hidden
-                                multiple
                                 accept="image/*"
                                 onChange={onImageChange}
                             />
@@ -98,30 +162,42 @@ function CreatePost() {
                             data-bs-interval="false"
                         >
                             <div className="carousel-indicators absolute right-0 bottom-0 left-0 flex justify-center p-0 mb-4">
-                                <button
-                                    type="button"
-                                    data-bs-target="#carouselExampleCaptions"
-                                    data-bs-slide-to="0"
-                                    className="active"
-                                    aria-current="true"
-                                    aria-label="Slide 1"
-                                ></button>
-                                <button
-                                    type="button"
-                                    data-bs-target="#carouselExampleCaptions"
-                                    data-bs-slide-to="1"
-                                    aria-label="Slide 2"
-                                ></button>
-                                <button
-                                    type="button"
-                                    data-bs-target="#carouselExampleCaptions"
-                                    data-bs-slide-to="2"
-                                    aria-label="Slide 3"
-                                ></button>
+                                {imageLogicComplelte &&
+                                    imageSrc.map((src) => {
+                                        const index = imageSrc.indexOf(src);
+                                        if (index === 0) {
+                                            return (
+                                                <button
+                                                    type="button"
+                                                    data-bs-target="#carouselExampleCaptions"
+                                                    data-bs-slide-to={index}
+                                                    className="active"
+                                                    aria-current="true"
+                                                    aria-label={`Slide ${
+                                                        index + 1
+                                                    }`}
+                                                    key={index}
+                                                ></button>
+                                            );
+                                        } else {
+                                            return (
+                                                <button
+                                                    type="button"
+                                                    data-bs-target="#carouselExampleCaptions"
+                                                    data-bs-slide-to={index}
+                                                    aria-label={`Slide ${
+                                                        index + 1
+                                                    }`}
+                                                    key={index}
+                                                ></button>
+                                            );
+                                        }
+                                    })}
                             </div>
                             <div className="carousel-inner relative w-full overflow-hidden">
-                                {imageSrc &&
+                                {imageLogicComplelte &&
                                     imageSrc.map((src) => {
+                                        console.log(imageSrc.indexOf(src));
                                         if (imageSrc.indexOf(src) === 0) {
                                             return (
                                                 <div
@@ -150,27 +226,6 @@ function CreatePost() {
                                             );
                                         }
                                     })}
-                                {/* <div className="carousel-item active relative float-left w-full">
-                                    <img
-                                        src="/assets/pawprint.png"
-                                        className="block w-full max-w-lg bg-white"
-                                        alt="..."
-                                    />
-                                </div>
-                                <div className="carousel-item relative float-left w-full">
-                                    <img
-                                        src="/assets/login/login02.jpg"
-                                        className="block w-full max-w-lg bg-white"
-                                        alt="..."
-                                    />
-                                </div>
-                                <div className="carousel-item relative float-left w-full">
-                                    <img
-                                        src="/assets/login/login03.jpg"
-                                        className="block w-full max-w-lg bg-white"
-                                        alt="..."
-                                    />
-                                </div> */}
                             </div>
                             <button
                                 className="carousel-control-prev absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline left-0"
@@ -199,9 +254,60 @@ function CreatePost() {
                                 <span className="visually-hidden">Next</span>
                             </button>
                         </div>
-
-                        <div className="p-4 flex justify-between items-center"></div>
+                        <div className="p-4 flex justify-between items-center">
+                            <div>
+                                {hashtag.map((tag) => {
+                                    const value = '@' + tag;
+                                    return (
+                                        <button
+                                            type="button"
+                                            className="text-blue-700 text-lg mr-2"
+                                            key={value}
+                                            onClick={onHashtagRemoveBtn}
+                                        >
+                                            {value}
+                                        </button>
+                                    );
+                                })}
+                                <div>
+                                    <input
+                                        type="text"
+                                        placeholder="hashtag 입력"
+                                        className="text-blue-500 border mr-4"
+                                        spellCheck="false"
+                                        value={hashtagInput}
+                                        onChange={onHashtagChange}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="border bg-blue-600 hover:bg-blue-700 text-white px-2 rounded-lg mb-2"
+                                        onClick={onHashtagAddBtn}
+                                    >
+                                        add
+                                    </button>
+                                    <textarea
+                                        className="focus:bg-gray-200 w-full border h-max resize-none overflow-hidden"
+                                        onChange={onTextChange}
+                                        onKeyDown={resize}
+                                        onKeyUp={resize}
+                                        value={text}
+                                        placeholder="내용을 입력해주세요."
+                                        cols="50"
+                                        spellCheck="false"
+                                    />
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
+                <div className="flex items-center justify-center">
+                    <button
+                        type="button"
+                        className="border bg-green-500 rounded-lg text-white p-2 mb-1"
+                        onClick={submit}
+                    >
+                        POST
+                    </button>
                 </div>
             </div>
         </>
