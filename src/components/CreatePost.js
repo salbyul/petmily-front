@@ -99,7 +99,7 @@ function CreatePost() {
         });
     };
 
-    const submit = async () => {
+    const submit = () => {
         if (imageList.length === 0) {
             alert('이미지는 필수 요소입니다.');
             return;
@@ -113,7 +113,7 @@ function CreatePost() {
                 headers: { Authorization: token },
             })
             .then((response) => {
-                console.log(response);
+                window.location.href = '/post';
             })
             .catch((error) => {
                 console.log(error);

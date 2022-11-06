@@ -2,7 +2,8 @@ import { faBookmark, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-function MyPost() {
+function MyPost({ nickname, post }) {
+    console.log(post);
     return (
         <>
             <div className="md:flex">
@@ -17,9 +18,8 @@ function MyPost() {
                             />
                             <div className="flex flex-row items-center ml-2">
                                 <span className="font-bold mr-1">
-                                    Mautic War
+                                    {nickname}
                                 </span>
-                                <small className="h-1 w-1 bg-gray-300 rounded-full mr-1 mt-1"></small>
                             </div>
                         </div>
                         <div className="pr-2">
