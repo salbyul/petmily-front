@@ -30,6 +30,14 @@ function CreatePost() {
     };
 
     const onHashtagAddBtn = () => {
+        if (hashtagInput.length === 0) return;
+        for (let i = 0; i < hashtagInput.length; i++) {
+            if (hashtagInput.charAt(i) === ' ') {
+                alert('해쉬태그에는 공백이 들어갈 수 없습니다.');
+                setHashtagInput('');
+                return;
+            }
+        }
         handleHashtag();
     };
 
@@ -104,6 +112,10 @@ function CreatePost() {
             alert('이미지는 필수 요소입니다.');
             return;
         }
+        if (text.length === 0) {
+            alert('내용은 필수 요소입니다.');
+            return;
+        }
         const formdata = new FormData();
         imageList.forEach((file) => formdata.append('files', file));
         hashtag.forEach((tag) => formdata.append('hashtag', tag));
@@ -118,6 +130,11 @@ function CreatePost() {
             .catch((error) => {
                 console.log(error);
             });
+    };
+
+    const onHashtagEnter = (e) => {
+        if (e.key === 'Enter' && e.nativeEvent.isComposing === false)
+            onHashtagAddBtn();
     };
 
     return (
@@ -277,6 +294,7 @@ function CreatePost() {
                                         spellCheck="false"
                                         value={hashtagInput}
                                         onChange={onHashtagChange}
+                                        onKeyDown={onHashtagEnter}
                                     />
                                     <button
                                         type="button"

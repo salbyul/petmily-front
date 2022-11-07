@@ -35,20 +35,21 @@ function MyPostList() {
     }, [postList]);
     return (
         <>
-            {loading && (
-                <div className="max-w-md mx-auto bg-white shadow-lg rounded-md overflow-hidden md:max-w-md">
-                    {postList.length !== 0 &&
-                        postList.map((post) => {
-                            return (
+            <div className="mx-auto md:max-w-md justify-center items-center">
+                {loading &&
+                    postList.length !== 0 &&
+                    postList.map((post) => {
+                        return (
+                            <div className="my-96 shadow-lg rounded-md">
                                 <MyPost
                                     nickname={nickname}
                                     post={post}
                                     key={post.resourceList[0]}
                                 />
-                            );
-                        })}
-                </div>
-            )}
+                            </div>
+                        );
+                    })}
+            </div>
         </>
     );
 }

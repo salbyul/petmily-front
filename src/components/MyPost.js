@@ -1,12 +1,22 @@
 import { faBookmark, faHeart } from '@fortawesome/free-regular-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useEffect, useState } from 'react';
 
 function MyPost({ nickname, post }) {
+    const [imageList, setImageList] = useState([]);
+    useEffect(() => {
+        const list = [];
+        post.resourceList.forEach((image) => {
+            list.push(image);
+        });
+        setImageList(list);
+    }, []);
     console.log(post);
+    // TODO
     return (
         <>
-            <div className="md:flex">
+            <div className="md:flex bg-white">
                 <div className="w-full">
                     <div className="flex justify-between items-center p-3">
                         <div className="flex flex-row items-center">
@@ -30,11 +40,104 @@ function MyPost({ nickname, post }) {
                         </div>
                     </div>
                     <div>
-                        <img
-                            src="/assets/pawprint.png"
-                            className="w-full h-75"
-                            alt="content"
-                        />
+                        <div
+                            id="carouselExampleCaptions"
+                            className="carousel slide relative"
+                            data-bs-ride="carousel"
+                            data-bs-interval="false"
+                        >
+                            <div className="carousel-indicators absolute right-0 bottom-0 left-0 flex justify-center p-0 mb-4">
+                                {imageList.map((src) => {
+                                    const index = imageList.indexOf(src);
+                                    console.log(index);
+                                    if (index === 0) {
+                                        return (
+                                            <button
+                                                type="button"
+                                                data-bs-target="#carouselExampleCaptions"
+                                                data-bs-slide-to={index}
+                                                className="active"
+                                                aria-current="true"
+                                                aria-label={`Slide ${
+                                                    index + 1
+                                                }`}
+                                                key={index}
+                                            ></button>
+                                        );
+                                    } else {
+                                        return (
+                                            <button
+                                                type="button"
+                                                data-bs-target="#carouselExampleCaptions"
+                                                data-bs-slide-to={index}
+                                                aria-label={`Slide ${
+                                                    index + 1
+                                                }`}
+                                                key={index}
+                                            ></button>
+                                        );
+                                    }
+                                })}
+                            </div>
+                            <div className="carousel-inner relative w-full overflow-hidden">
+                                {imageList.map((src) => {
+                                    console.log(imageList.indexOf(src));
+                                    if (imageList.indexOf(src) === 0) {
+                                        return (
+                                            <div
+                                                className="carousel-item active relative float-left w-full"
+                                                key={imageList.indexOf(src)}
+                                            >
+                                                <img
+                                                    src={`data:image/jpeg;base64,${src}`}
+                                                    className="block w-full max-w-lg bg-white"
+                                                    alt="previous-img"
+                                                />
+                                            </div>
+                                        );
+                                    } else {
+                                        return (
+                                            <div
+                                                className="carousel-item relative float-left w-full"
+                                                key={imageList.indexOf(src)}
+                                            >
+                                                <img
+                                                    src={`data:image/jpeg;base64,${src}`}
+                                                    className="block w-full max-w-lg bg-white"
+                                                    alt="previous-img"
+                                                />
+                                            </div>
+                                        );
+                                    }
+                                })}
+                            </div>
+                            <button
+                                className="carousel-control-prev absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline left-0"
+                                type="button"
+                                data-bs-target="#carouselExampleCaptions"
+                                data-bs-slide="prev"
+                            >
+                                <span
+                                    className="carousel-control-prev-icon inline-block bg-no-repeat"
+                                    aria-hidden="true"
+                                ></span>
+                                <span className="visually-hidden">
+                                    Previous
+                                </span>
+                            </button>
+                            <button
+                                className="carousel-control-next absolute top-0 bottom-0 flex items-center justify-center p-0 text-center border-0 hover:outline-none hover:no-underline focus:outline-none focus:no-underline right-0"
+                                type="button"
+                                data-bs-target="#carouselExampleCaptions"
+                                data-bs-slide="next"
+                            >
+                                <span
+                                    className="carousel-control-next-icon inline-block bg-no-repeat"
+                                    aria-hidden="true"
+                                ></span>
+                                <span className="visually-hidden">Next</span>
+                            </button>
+                        </div>
                     </div>
                     <div className="p-4 flex justify-between items-center">
                         <div className="flex flex-row items-center">
@@ -49,6 +152,27 @@ function MyPost({ nickname, post }) {
                                 className="hover:text-gray-600"
                             />
                         </div>
+                    </div>
+                    <div className="p-4 flex justify-between items-center">
+                        <div>
+                            {post.hashtagList.map((hashtag) => {
+                                const value = '@' + hashtag;
+                                return (
+                                    <button
+                                        type="button"
+                                        className="text-blue-700 text-lg mr-2"
+                                        key={hashtag}
+                                    >
+                                        {value}
+                                    </button>
+                                );
+                            })}
+                        </div>
+                    </div>
+                    <div>
+                        <p className="break-words pl-4 text-lg text-gray-800">
+                            {post.content}
+                        </p>
                     </div>
                 </div>
             </div>
