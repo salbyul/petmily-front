@@ -40,12 +40,11 @@ function MyPostList() {
                     postList.length !== 0 &&
                     postList.map((post) => {
                         return (
-                            <div className="my-96 shadow-lg rounded-md">
-                                <MyPost
-                                    nickname={nickname}
-                                    post={post}
-                                    key={post.resourceList[0]}
-                                />
+                            <div
+                                className="my-96 shadow-lg rounded-md"
+                                key={post.resourceList[0]}
+                            >
+                                <MyPost nickname={nickname} post={post} />
                             </div>
                         );
                     })}

@@ -64,6 +64,7 @@ function CreatePost() {
         setImageLogicComplelte(false);
         if (e.target.files.length + imageSrc.length > 5) {
             alert('최대 5개의 파일까지만 업로드할 수 있습니다.');
+            setImageLogicComplelte(true);
             return;
         }
         const chosenFiles = Array.prototype.slice.call(e.target.files);
@@ -88,9 +89,7 @@ function CreatePost() {
 
     const handleImageFiles = (files) => {
         const uploaded = [...imageList];
-        if (uploaded.findIndex((f) => f.name === files.name) === -1) {
-            uploaded.push(files[0]);
-        }
+        uploaded.push(files[0]);
         setImageList(uploaded);
     };
 
@@ -136,7 +135,6 @@ function CreatePost() {
         if (e.key === 'Enter' && e.nativeEvent.isComposing === false)
             onHashtagAddBtn();
     };
-
     return (
         <>
             <div className="max-w-md mx-auto bg-white shadow-lg rounded-md overflow-hidden md:max-w-md">
@@ -145,14 +143,14 @@ function CreatePost() {
                         <div className="flex justify-between items-center p-3">
                             <div className="flex flex-row items-center">
                                 <img
-                                    src="https://i.imgur.com/aq39RMA.jpg"
+                                    src="http://www.gravatar.com/avatar/2acfb745ecf9d4dccb3364752d17f65f?s=260&d=mp"
                                     className="rounded-full"
                                     width="40"
                                     alt="icon"
                                 />
                                 <div className="flex flex-row items-center ml-2">
                                     <span className="font-bold mr-1">
-                                        Mautic War
+                                        MemberA
                                     </span>
                                     <small className="h-1 w-1 bg-gray-300 rounded-full mr-1 mt-1"></small>
                                 </div>
@@ -214,7 +212,6 @@ function CreatePost() {
                             <div className="carousel-inner relative w-full overflow-hidden">
                                 {imageLogicComplelte &&
                                     imageSrc.map((src) => {
-                                        console.log(imageSrc.indexOf(src));
                                         if (imageSrc.indexOf(src) === 0) {
                                             return (
                                                 <div

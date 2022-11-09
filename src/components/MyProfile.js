@@ -17,7 +17,7 @@ function MyProfile() {
 
     useEffect(() => {
         axios
-            .get('http://localhost:8080/member/my-detail', {
+            .get('http://localhost:8080/member/detail', {
                 headers: { Authorization: token },
             })
             .then((response) => {

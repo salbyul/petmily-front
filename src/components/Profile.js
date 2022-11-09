@@ -6,21 +6,57 @@ function Profile({ target }) {
     const [nickname, setNickname] = useState(''); // input
     const [statusMessage, setStatusMessage] = useState(''); // input
     const [loading, setLoading] = useState(false); // 통신 완료 확인
+    const [email, setEmail] = useState('');
+    const [isFollow, setIsFollow] = useState(false);
 
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/member/my-detail?m=${target}`, {
+            .get(`http://localhost:8080/member/detail?m=${target}`, {
                 headers: { Authorization: token },
             })
             .then((response) => {
+                console.log(response);
                 setNickname(response.data.nickname);
                 setStatusMessage(response.data.statusMessage);
+                setEmail(response.data.email);
+                setIsFollow(response.data.isFollower);
                 setLoading(true);
             })
             .catch((error) => {
                 console.log(error);
             });
     }, []);
+
+    const onFollowBtn = () => {
+        const data = { email: email };
+        axios
+            .post('http://localhost:8080/follow/follow', data, {
+                headers: { Authorization: token },
+            })
+            .then((response) => {
+                setIsFollow(true);
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
+    const onUnFollowBtn = () => {
+        const data = { email: email };
+        axios
+            .put('http://localhost:8080/follow/unfollow', data, {
+                headers: { Authorization: token },
+            })
+            .then((response) => {
+                setIsFollow(false);
+                console.log(response);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    };
+
     return (
         <>
             {loading && (
@@ -33,6 +69,23 @@ function Profile({ target }) {
                                     <span className="text-xl font-semibold block">
                                         {nickname}
                                     </span>
+                                    {loading && !isFollow ? (
+                                        <button
+                                            type="button"
+                                            className="text-blue-600 text-sm hover:text-blue-800"
+                                            onClick={onFollowBtn}
+                                        >
+                                            Follow
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="button"
+                                            className="text-blue-600 text-sm hover:text-blue-800"
+                                            onClick={onUnFollowBtn}
+                                        >
+                                            UnFollow
+                                        </button>
+                                    )}
                                 </div>
                                 <div className="pb-4">
                                     <span className="border-1 rounded-r px-4 py-2 w-full">

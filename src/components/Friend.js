@@ -7,9 +7,11 @@ import axios from 'axios';
 function Friend() {
     const token = localStorage.getItem('token');
     const [friendList, setFriendList] = useState([]);
-    ReactModal.setAppElement('#root');
+    const [loadingFollow, setloadingFollow] = useState(false);
     const [input, setInput] = useState('');
     const [isOpen, setIsOpen] = useState(false);
+    const [followList, setFollowList] = useState([]);
+    ReactModal.setAppElement('#root');
     const onChange = (e) => {
         setInput(e.target.value);
     };
@@ -34,6 +36,25 @@ function Friend() {
                 setFriendList(list);
             });
     }, [isOpen]);
+    useEffect(() => {
+        axios
+            .get('http://localhost:8080/follow/find-all', {
+                headers: { Authorization: token },
+            })
+            .then((response) => {
+                console.log(response);
+                const list = [];
+                response.data.forEach((f) => list.push(f.targetMember));
+                setFollowList(list);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
+    useEffect(() => {
+        setloadingFollow(true);
+        console.log(followList);
+    }, [followList]);
     return (
         <>
             <div className="max-w-md mx-auto bg-white shadow-lg rounded-md overflow-hidden md:max-w-2xl">
@@ -107,6 +128,30 @@ function Friend() {
                         <FriendList />
                     </div>
                 </div>
+                {loadingFollow &&
+                    followList.map((f) => {
+                        return (
+                            <a href={'/profile?m=' + f.nickname} key={f.id}>
+                                <div className="flex flex-row items-center p-2 m-2 shadow">
+                                    <img
+                                        src="https://i.imgur.com/aq39RMA.jpg"
+                                        className="rounded-full"
+                                        width="40"
+                                        alt="icon"
+                                    />
+                                    <div className="flex flex-row items-center ml-2">
+                                        <span className="font-bold mr-1 pr-2">
+                                            {f.nickname}
+                                        </span>
+                                        <small className="h-1 w-1 bg-gray-300 rounded-full mr-1 mt-1"></small>
+                                        <span className="text-gray-700">
+                                            {f.statusMessage}
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        );
+                    })}
             </div>
         </>
     );
