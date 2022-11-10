@@ -1,21 +1,57 @@
 import {
     faBookmark,
-    faHeart,
+    faHeart as unLike,
     faComment,
-    faPaperPlane,
 } from '@fortawesome/free-regular-svg-icons';
+import { faHeart as like } from '@fortawesome/free-solid-svg-icons';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 function Post({ nickname, post }) {
+    const token = localStorage.getItem('token');
     const [imageList, setImageList] = useState([]);
     const [hashtagList, setHashtagList] = useState([]);
+    const [postId, setPostId] = useState(-100);
+    const [isLike, setIsLike] = useState(false);
     useEffect(() => {
         setImageList(post.resourceList);
         setHashtagList(post.hashtagList);
-        return () => {};
+        setPostId(post.id);
+        setIsLike(post.isLike);
+        console.log(postId);
     }, []);
+
+    const onLikeBtn = () => {
+        const data = { postId: postId };
+        if (isLike === false) {
+            axios
+                .post('http://localhost:8080/like/like', data, {
+                    headers: { Authorization: token },
+                })
+                .then((response) => {
+                    console.log(response);
+                    setIsLike(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        if (isLike === true) {
+            axios
+                .post('http://localhost:8080/like/unlike', data, {
+                    headers: { Authorization: token },
+                })
+                .then((response) => {
+                    console.log(response);
+                    setIsLike(false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    };
 
     return (
         <>
@@ -34,15 +70,6 @@ function Post({ nickname, post }) {
                                     <span className="font-bold mr-1">
                                         {post.author}
                                     </span>
-                                    <small className="h-1 w-1 bg-gray-300 rounded-full mr-1 mt-1"></small>
-                                    {!(nickname === post.author) && (
-                                        <a
-                                            href="#!"
-                                            className="text-blue-600 text-sm hover:text-blue-800"
-                                        >
-                                            Follow
-                                        </a>
-                                    )}
                                 </div>
                             </div>
                             <div className="pr-2">
@@ -163,10 +190,19 @@ function Post({ nickname, post }) {
                         </div>
                         <div className="p-4 flex justify-between items-center">
                             <div className="flex flex-row items-center">
-                                <FontAwesomeIcon
-                                    icon={faHeart}
-                                    className="hover:text-gray-600 mr-2"
-                                />
+                                <button type="button" onClick={onLikeBtn}>
+                                    {isLike ? (
+                                        <FontAwesomeIcon
+                                            icon={like}
+                                            className="hover:text-red-500 mr-2 text-red-400"
+                                        />
+                                    ) : (
+                                        <FontAwesomeIcon
+                                            icon={unLike}
+                                            className="hover:text-gray-600 mr-2"
+                                        />
+                                    )}
+                                </button>
                                 <FontAwesomeIcon
                                     icon={faComment}
                                     className="hover:text-gray-600 mr-2"

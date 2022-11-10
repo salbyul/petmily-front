@@ -16,13 +16,14 @@ function Friend() {
         setInput(e.target.value);
     };
     const onClick = () => {
+        if (input === '') {
+            alert('친구의 닉네임을 입력해주세요.');
+            return;
+        }
         setIsOpen(true);
-    };
-
-    useEffect(() => {
         let list = null;
         axios
-            .get('http://localhost:8080/member/find-all', {
+            .get('http://localhost:8080/member/find-member', {
                 headers: { Authorization: token },
                 params: { target: input },
             })
@@ -35,6 +36,24 @@ function Friend() {
             .then(() => {
                 setFriendList(list);
             });
+    };
+
+    useEffect(() => {
+        // let list = null;
+        // axios
+        //     .get('http://localhost:8080/member/find-member', {
+        //         headers: { Authorization: token },
+        //         params: { target: input },
+        //     })
+        //     .then((response) => {
+        //         list = response.data;
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     })
+        //     .then(() => {
+        //         setFriendList(list);
+        //     });
     }, [isOpen]);
     useEffect(() => {
         axios
