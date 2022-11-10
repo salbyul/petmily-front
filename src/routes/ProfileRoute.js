@@ -12,8 +12,8 @@ function ProfileRoute() {
             <div>
                 <Navbar />
             </div>
-            <div className="flex h-screen items-center justify-center">
-                <Sidebar />
+            <Sidebar />
+            <div className="flex h-screen justify-center items-center">
                 {!target && <MyProfile />}
                 {target && <Profile target={target} />}
             </div>

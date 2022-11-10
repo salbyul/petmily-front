@@ -8,8 +8,8 @@ function FollowRoute() {
             <div>
                 <Navbar />
             </div>
+            <Sidebar />
             <div className="flex h-screen items-center justify-center">
-                <Sidebar />
                 <Firend />
             </div>
         </>

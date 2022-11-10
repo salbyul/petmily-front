@@ -7,7 +7,7 @@ function Navbar() {
     };
     return (
         <>
-            <nav className="flex items-center justify-between flex-wrap shadow-md bg-gray-50 p-6">
+            <nav className="flex items-center justify-between flex-wrap shadow-md bg-gray-50 p-6 fixed-top">
                 <div className="flex items-center flex-shrink-0 text-black mr-6">
                     <a href="/" className="flex items-center justify-center">
                         <img

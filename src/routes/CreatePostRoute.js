@@ -8,8 +8,8 @@ function CreatePostRoute() {
             <div>
                 <Navbar />
             </div>
-            <div className="flex h-screen items-center justify-center">
-                <Sidebar />
+            <Sidebar />
+            <div className="flex h-screen justify-center items-center">
                 <CreatePost />
             </div>
         </>

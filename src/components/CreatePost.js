@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 
 function CreatePost() {
     const token = localStorage.getItem('token');
+    const [nickname, setNickname] = useState('');
     const [imageList, setImageList] = useState([]);
     const [imageLogicComplelte, setImageLogicComplelte] = useState(false);
     const [imageSrc, setImageSrc] = useState([]);
@@ -13,6 +14,18 @@ function CreatePost() {
     const [hashtagInput, setHashtagInput] = useState('');
     const [hashtag, setHashtag] = useState([]);
 
+    useEffect(() => {
+        axios
+            .get('http://localhost:8080/member', {
+                headers: { Authorization: token },
+            })
+            .then((response) => {
+                setNickname(response.data.nickname);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, []);
     useEffect(() => {
         for (let i = 0; i < imageList.length; i++) {
             encodeFileToBase64(imageList[i]);
@@ -150,7 +163,7 @@ function CreatePost() {
                                 />
                                 <div className="flex flex-row items-center ml-2">
                                     <span className="font-bold mr-1">
-                                        MemberA
+                                        {nickname}
                                     </span>
                                     <small className="h-1 w-1 bg-gray-300 rounded-full mr-1 mt-1"></small>
                                 </div>
