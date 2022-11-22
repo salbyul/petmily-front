@@ -107,7 +107,7 @@ function Login() {
                                                         </button>
                                                         <a
                                                             className="text-gray-500"
-                                                            href="#1"
+                                                            href="/find-password"
                                                         >
                                                             비밀번호를
                                                             잊으셨나요?

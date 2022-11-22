@@ -11,6 +11,7 @@ import PostRoute from './routes/PostRoute';
 import CreatePostRoute from './routes/CreatePostRoute';
 import BookmarkRoute from './routes/BookmarkRoute';
 import SearchRoute from './routes/SearchRoute';
+import FindPassword from './routes/FindPassword';
 
 function App() {
     const token = localStorage.getItem('token');
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/profile" element={<ProfileRoute />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/search" element={<SearchRoute />} />
+                <Route path="/find-password" element={<FindPassword />} />
             </Routes>
         </Router>
     );
