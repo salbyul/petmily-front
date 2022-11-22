@@ -10,6 +10,9 @@ function SidebarTabList({ d, subject }) {
             case '알림':
                 setPage('/notification');
                 break;
+            case '북마크':
+                setPage('/bookmark');
+                break;
             case '메시지':
                 setPage('/messages');
                 break;

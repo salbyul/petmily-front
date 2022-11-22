@@ -1,10 +1,10 @@
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
-import MyPost from '../components/Post';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import MyPost from '../components/MyPost';
 
-function Main() {
+function BookmarkRoute() {
     const token = localStorage.getItem('token');
     const [nickname, setNickname] = useState('');
     const [postList, setPostList] = useState([]);
@@ -21,12 +21,11 @@ function Main() {
                 console.log(error);
             });
         axios
-            .get('http://localhost:8080/post/all-post', {
+            .get('http://localhost:8080/bookmark/all', {
                 headers: { Authorization: token },
             })
             .then((response) => {
                 console.log(response);
-                setPostList(response.data);
             })
             .catch((error) => {
                 console.log(error);
@@ -35,6 +34,7 @@ function Main() {
     useEffect(() => {
         setLoading(true);
     }, [postList]);
+
     return (
         <>
             <div>
@@ -61,4 +61,4 @@ function Main() {
         </>
     );
 }
-export default Main;
+export default BookmarkRoute;

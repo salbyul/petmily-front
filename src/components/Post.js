@@ -1,10 +1,13 @@
 import {
-    faBookmark,
+    faBookmark as unBookmark,
     faHeart as unLike,
     faComment,
 } from '@fortawesome/free-regular-svg-icons';
-import { faHeart as like } from '@fortawesome/free-solid-svg-icons';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
+import {
+    faHeart as like,
+    faEllipsis,
+    faBookmark as bookmark,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useState, useEffect } from 'react';
@@ -15,12 +18,13 @@ function Post({ nickname, post }) {
     const [hashtagList, setHashtagList] = useState([]);
     const [postId, setPostId] = useState(-100);
     const [isLike, setIsLike] = useState(false);
+    const [isBookmark, setIsBookmark] = useState(false);
     useEffect(() => {
         setImageList(post.resourceList);
         setHashtagList(post.hashtagList);
         setPostId(post.id);
         setIsLike(post.isLike);
-        console.log(postId);
+        setIsBookmark(post.isBookmark);
     }, []);
 
     const onLikeBtn = () => {
@@ -31,7 +35,6 @@ function Post({ nickname, post }) {
                     headers: { Authorization: token },
                 })
                 .then((response) => {
-                    console.log(response);
                     setIsLike(true);
                 })
                 .catch((error) => {
@@ -44,8 +47,38 @@ function Post({ nickname, post }) {
                     headers: { Authorization: token },
                 })
                 .then((response) => {
-                    console.log(response);
                     setIsLike(false);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+    };
+
+    // TODO
+    const onBookmarkBtn = () => {
+        const data = { postId: postId };
+        if (isBookmark === false) {
+            axios
+                .post('http://localhost:8080/bookmark/bookmark', data, {
+                    headers: { Authorization: token },
+                })
+                .then((response) => {
+                    console.log(response);
+                    setIsBookmark(true);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        }
+        if (isBookmark === true) {
+            axios
+                .post('http://localhost:8080/bookmark/un-bookmark', data, {
+                    headers: { Authorization: token },
+                })
+                .then((response) => {
+                    console.log(response);
+                    setIsBookmark(false);
                 })
                 .catch((error) => {
                     console.log(error);
@@ -213,10 +246,19 @@ function Post({ nickname, post }) {
                             /> */}
                             </div>
                             <div>
-                                <FontAwesomeIcon
-                                    icon={faBookmark}
-                                    className="hover:text-gray-600"
-                                />
+                                <button type="button" onClick={onBookmarkBtn}>
+                                    {!isBookmark ? (
+                                        <FontAwesomeIcon
+                                            icon={unBookmark}
+                                            className="hover:text-gray-600"
+                                        />
+                                    ) : (
+                                        <FontAwesomeIcon
+                                            icon={bookmark}
+                                            className="hover:text-gray-600"
+                                        />
+                                    )}
+                                </button>
                             </div>
                         </div>
                         <div className="p-4 flex items-center">
