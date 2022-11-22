@@ -1,10 +1,13 @@
+import axios from 'axios';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 function Navbar() {
     const [input, setInput] = useState('');
     const onChange = (e) => {
         setInput(e.target.value);
     };
+    const onClick = (e) => {};
     return (
         <>
             <nav className="flex items-center justify-between flex-wrap shadow-md bg-gray-50 p-6 fixed-top">
@@ -84,26 +87,25 @@ function Navbar() {
                                     onChange={onChange}
                                 />
                             </div>
-                            <button
-                                type="submit"
-                                className="p-2.5 ml-2 text-sm font-medium text-white bg-blue-400 rounded-lg border border-blue-500 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300"
-                            >
-                                <svg
-                                    className="w-5 h-5"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    viewBox="0 0 24 24"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <path
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                        strokeWidth="2"
-                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                    ></path>
-                                </svg>
-                                <span className="sr-only">Search</span>
-                            </button>
+                            <Link to="/search" state={{ input: input }}>
+                                <button className="p-2.5 ml-2 text-sm font-medium text-white bg-blue-400 rounded-lg border border-blue-500 hover:bg-blue-500 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                                    <svg
+                                        className="w-5 h-5"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth="2"
+                                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                        ></path>
+                                    </svg>
+                                    <span className="sr-only">Search</span>
+                                </button>
+                            </Link>
                         </form>
                     </div>
                 </div>

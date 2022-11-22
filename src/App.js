@@ -10,6 +10,7 @@ import NotificationRoute from './routes/NotificationRoute';
 import PostRoute from './routes/PostRoute';
 import CreatePostRoute from './routes/CreatePostRoute';
 import BookmarkRoute from './routes/BookmarkRoute';
+import SearchRoute from './routes/SearchRoute';
 
 function App() {
     const token = localStorage.getItem('token');
@@ -31,6 +32,7 @@ function App() {
                 <Route path="/follow" element={<FollowRoute />} />
                 <Route path="/profile" element={<ProfileRoute />} />
                 <Route path="/logout" element={<Logout />} />
+                <Route path="/search" element={<SearchRoute />} />
             </Routes>
         </Router>
     );

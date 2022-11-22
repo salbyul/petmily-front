@@ -55,7 +55,6 @@ function Post({ nickname, post }) {
         }
     };
 
-    // TODO
     const onBookmarkBtn = () => {
         const data = { postId: postId };
         if (isBookmark === false) {

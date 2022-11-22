@@ -2,7 +2,7 @@ import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import MyPost from '../components/MyPost';
+import Post from '../components/Post';
 
 function PostRoute() {
     const token = localStorage.getItem('token');
@@ -52,7 +52,7 @@ function PostRoute() {
                                     className="my-96 shadow-lg rounded-md"
                                     key={post.resourceList[0]}
                                 >
-                                    <MyPost nickname={nickname} post={post} />
+                                    <Post nickname={nickname} post={post} />
                                 </div>
                             );
                         })}
